@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { parseISO } from "date-fns";
-import AppointmentsRepository from "../repositories/AppointmentsRepository";
-import CreateAppointmentServices from "../services/CreateAppointmentServices";
 import { getCustomRepository } from "typeorm";
-import ensureAuthenticated from "../middlewares/ensureAuthenticated";
+import AppointmentsRepository from "@modules/appointments/repositories/AppointmentsRepository";
+import CreateAppointmentServices from "@modules/appointments/services/CreateAppointmentServices";
+import ensureAuthenticated from "@modules/users/infra/http/middlewares/ensureAuthenticated";
 
 // SoC: separation of concerns
 // DTO: Data Transfer Object => passar parâmetros em objetos
