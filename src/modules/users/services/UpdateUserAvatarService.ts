@@ -1,21 +1,25 @@
-
 import path from "path";
 import uploadConfig from "@config/upload";
 import fs from "fs";
 import User from "@modules/users/infra/typeorm/entities/User";
 import AppError from "@shared/errors/AppError";
 import IUsersRepository from "../repositories/IUsersRepository";
+import { inject, injectable } from "tsyringe";
+import IStorageProvider from "@shared/container/providers/StorageProvider/models/IStorageProvider";
 
 interface IRequest {
   user_id: string;
   avatarFilename: string;
 }
 
+@injectable()
 class UpdateUserAvatarService {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    @inject("UsersRepository") private usersRepository: IUsersRepository,
+    @inject("StorageProvider") private storageProvider: IStorageProvider
+  ) {}
 
   public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
-
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
@@ -24,16 +28,12 @@ class UpdateUserAvatarService {
 
     if (user.avatar) {
       // Deletar avatar anterior
-
-      const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
-      const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath);
-
-      if (userAvatarFileExists) {
-        await fs.promises.unlink(userAvatarFilePath);
-      }
+      await this.storageProvider.deleteFile(user.avatar);
     }
 
-    user.avatar = avatarFilename;
+    const fileName = await this.storageProvider.saveFile(avatarFilename);
+
+    user.avatar = fileName;
 
     // Funciona para atualizar ou criar um novo usuario
     await this.usersRepository.save(user);

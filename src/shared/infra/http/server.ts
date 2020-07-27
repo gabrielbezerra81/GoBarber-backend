@@ -11,6 +11,8 @@ import "@shared/infra/typeorm";
 
 import errorHandler from "@shared/infra/http/middlewares/errorHandler";
 
+import "@shared/container";
+
 const app = express();
 
 app.use(cors());
