@@ -15,8 +15,8 @@ describe("CreateAppointment", () => {
       provider_id: "jda12312831",
     });
 
-    expect(appointment).toHaveProperty("id");
-    expect(appointment.provider_id).toBe("jda12312831");
+    await expect(appointment).toHaveProperty("id");
+    await expect(appointment.provider_id).toBe("jda12312831");
   });
 
   it("should not be able to create two appointment on the same date", async () => {
@@ -32,7 +32,7 @@ describe("CreateAppointment", () => {
       provider_id: "jda12312831",
     });
 
-    expect(
+    await expect(
       createAppointmentService.execute({
         date,
         provider_id: "jda12312831",
