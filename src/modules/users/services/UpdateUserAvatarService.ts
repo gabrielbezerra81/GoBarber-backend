@@ -1,6 +1,3 @@
-import path from "path";
-import uploadConfig from "@config/upload";
-import fs from "fs";
 import User from "@modules/users/infra/typeorm/entities/User";
 import AppError from "@shared/errors/AppError";
 import IUsersRepository from "../repositories/IUsersRepository";

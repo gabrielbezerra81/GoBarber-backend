@@ -1,6 +1,7 @@
 import { Router } from "express";
 import ensureAuthenticated from "@modules/users/infra/http/middlewares/ensureAuthenticated";
 import AppointmentsController from "../controllers/AppointmentsController";
+import AppointmentsRepository from "../../typeorm/repositories/AppointmentsRepository";
 
 // SoC: separation of concerns
 // DTO: Data Transfer Object => passar parâmetros em objetos
@@ -16,7 +17,7 @@ appointmentsRouter.use(ensureAuthenticated);
 // appointmentsRouter.get("/", async (request, response) => {
 // const appointmentsRepository = new AppointmentsRepository();
 
-//   const appointments = await appointmentsRepository.find();
+//   const appointments = await appointmentsRepository.();
 
 //   return response.json(appointments);
 // });
