@@ -1,7 +1,9 @@
 import "reflect-metadata";
+import "dotenv/config";
 import express from "express";
 import "express-async-errors";
 import cors from "cors";
+import { errors } from "celebrate";
 
 import routes from "./routes";
 
@@ -11,7 +13,7 @@ import "@shared/infra/typeorm";
 
 import errorHandler from "@shared/infra/http/middlewares/errorHandler";
 
-import "@shared/container";
+import "@shared/container/container";
 
 const app = express();
 
@@ -22,6 +24,8 @@ app.use(express.json());
 app.use("/files", express.static(uploadConfig.uploadsFolder));
 
 app.use("/", routes);
+
+app.use(errors());
 
 app.use(errorHandler);
 

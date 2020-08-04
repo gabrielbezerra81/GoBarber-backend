@@ -35,8 +35,6 @@ class UpdateUserAvatarService {
     // Funciona para atualizar ou criar um novo usuario
     await this.usersRepository.save(user);
 
-    delete user.password;
-
     return user;
   }
 }

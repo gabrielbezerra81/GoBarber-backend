@@ -1,7 +1,6 @@
 import { container } from "tsyringe";
 
 import "@modules/users/providers";
-import "./providers";
 
 import IAppointmentsRepository from "@modules/appointments/repositories/IAppointmentsRepository";
 import AppointmentsRepository from "@modules/appointments/infra/typeorm/repositories/AppointmentsRepository";
@@ -12,6 +11,10 @@ import IUserTokensRepository from "@modules/users/repositories/IUserTokensReposi
 import UserTokensRepository from "@modules/users/infra/typeorm/repositories/UserTokensRepository";
 import NotificationsRepository from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
 import INotificationsRepository from "@modules/notifications/repositories/INotificationsRepository";
+
+import "./providers/MailProvider/index";
+
+import "./providers/StorageProvider/index";
 
 container.registerSingleton<IAppointmentsRepository>(
   "AppointmentsRepository",

@@ -4,6 +4,7 @@ import Mail from "nodemailer/lib/mailer";
 import ISendMailDTO from "../dtos/ISendMailDTO";
 import IMailTemplateProvider from "../../MailTemplateProvider/models/IMailTemplateProvider";
 import { inject, injectable } from "tsyringe";
+import mailConfig from "@config/mail";
 
 @injectable()
 export default class EtherealMailProvider implements IMailProvider {
@@ -14,15 +15,16 @@ export default class EtherealMailProvider implements IMailProvider {
     private mailTemplateProvider: IMailTemplateProvider
   ) {
     const setupMailer = async () => {
-      const account = await nodemailer.createTestAccount();
+      // const account = await nodemailer.createTestAccount();
 
       const transporter = nodemailer.createTransport({
-        host: account.smtp.host,
-        port: account.smtp.port,
-        secure: account.smtp.secure,
+        service: "gmail",
+        // host: account.smtp.host,
+        // port: account.smtp.port,
+        // secure: account.smtp.secure,
         auth: {
-          user: account.user,
-          pass: account.pass,
+          user: mailConfig.email,
+          pass: mailConfig.password,
         },
       });
       this.client = transporter;
@@ -41,7 +43,7 @@ export default class EtherealMailProvider implements IMailProvider {
     const info = await this.client.sendMail({
       from: {
         name: from?.name || "Equipe GoBarber",
-        address: from?.email || "equipe@gobarber.com.br",
+        address: from?.email || "equipegobarber@gmail.com",
       },
       to: { name: to.name, address: to.email },
       subject,

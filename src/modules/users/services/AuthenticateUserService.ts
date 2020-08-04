@@ -38,8 +38,6 @@ class AuthenticateUserService {
     if (!passwordMatched) {
       throw new AppError("Incorrect email/password combination.", 401);
     }
-
-    delete user.password;
     // Usuário autenticado
     // expiresIn: experiência / segurança
 
