@@ -4,6 +4,6 @@ interface MailConfig {
 }
 
 export default {
-  email: process.env.MAIL_USER,
-  password: process.env.MAIL_PASS,
+  email: process.env.GMAIL_USER,
+  password: process.env.GMAIL_PASS,
 } as MailConfig;

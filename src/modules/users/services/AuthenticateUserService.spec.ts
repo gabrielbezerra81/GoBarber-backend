@@ -1,21 +1,27 @@
+import "dotenv/config";
 import FakeUsersRepository from "../repositories/fakes/FakeUsersRepository";
 import AuthenticateUserService from "./AuthenticateUserService";
 import CreateUserService from "./CreateUserService";
 import FakeHashProvider from "../providers/HashProvider/fakes/FakeHashProvider";
 import AppError from "@shared/errors/AppError";
+import FakeCashProvider from "@shared/container/providers/CacheProvider/fakes/FakeCacheProvider";
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
 let createUserService: CreateUserService;
 let authenticateUserService: AuthenticateUserService;
+let fakeCashProvider: FakeCashProvider;
 
 describe("AuthenticateUser", () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCashProvider = new FakeCashProvider();
+
     createUserService = new CreateUserService(
       fakeUsersRepository,
-      fakeHashProvider
+      fakeHashProvider,
+      fakeCashProvider
     );
     authenticateUserService = new AuthenticateUserService(
       fakeUsersRepository,

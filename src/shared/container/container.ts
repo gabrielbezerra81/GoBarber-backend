@@ -16,6 +16,8 @@ import "./providers/MailProvider/index";
 
 import "./providers/StorageProvider/index";
 
+import "./providers/CacheProvider/index";
+
 container.registerSingleton<IAppointmentsRepository>(
   "AppointmentsRepository",
   AppointmentsRepository

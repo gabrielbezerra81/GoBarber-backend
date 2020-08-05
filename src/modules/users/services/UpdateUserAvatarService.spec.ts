@@ -5,22 +5,26 @@ import FakeUsersRepository from "../repositories/fakes/FakeUsersRepository";
 import FakeHashProvider from "../providers/HashProvider/fakes/FakeHashProvider";
 import CreateUserService from "./CreateUserService";
 import AppError from "@shared/errors/AppError";
+import FakeCashProvider from "@shared/container/providers/CacheProvider/fakes/FakeCacheProvider";
 
 let fakeStorageProvider: FakeStorageProvider;
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
 let createUserService: CreateUserService;
 let updateUserAvatarService: UpdateUserAvatarService;
+let fakeCashProvider: FakeCashProvider;
 
 describe("UpdateUserAvatar", () => {
   beforeEach(() => {
     fakeStorageProvider = new FakeStorageProvider();
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCashProvider = new FakeCashProvider();
 
     createUserService = new CreateUserService(
       fakeUsersRepository,
-      fakeHashProvider
+      fakeHashProvider,
+      fakeCashProvider
     );
 
     updateUserAvatarService = new UpdateUserAvatarService(
