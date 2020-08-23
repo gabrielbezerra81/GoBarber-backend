@@ -18,7 +18,7 @@ export default class ListProviderAppointmentsService {
     private appointmentsRepository: IAppointmentsRepository,
 
     @inject("CacheProvider")
-    private cacheProvider: ICacheProvider
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -30,7 +30,7 @@ export default class ListProviderAppointmentsService {
     const cacheKey = `provider-appointments:${provider_id}:${year}-${month}-${day}`;
 
     let appointments = await this.cacheProvider.recover<Appointment[]>(
-      cacheKey
+      cacheKey,
     );
 
     if (!appointments) {
@@ -40,7 +40,7 @@ export default class ListProviderAppointmentsService {
           day,
           month,
           year,
-        }
+        },
       );
 
       await this.cacheProvider.save(cacheKey, classToClass(appointments));

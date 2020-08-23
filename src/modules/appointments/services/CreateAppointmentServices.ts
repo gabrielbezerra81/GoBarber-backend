@@ -22,7 +22,7 @@ class CreateAppointmentServices {
     private notificationsRepository: INotificationsRepository,
 
     @inject("CacheProvider")
-    private cacheProvider: ICacheProvider
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -38,7 +38,7 @@ class CreateAppointmentServices {
 
     if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
       throw new AppError(
-        "You can't create an appointment before 8am or after 5pm."
+        "You can't create an appointment before 8am or after 5pm.",
       );
     }
 
@@ -48,7 +48,7 @@ class CreateAppointmentServices {
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
-      provider_id
+      provider_id,
     );
 
     if (findAppointmentInSameDate) {
@@ -71,11 +71,19 @@ class CreateAppointmentServices {
     await this.cacheProvider.invalidate(
       `provider-appointments:${provider_id}:${format(
         appointmentDate,
-        "yyyy-M-d"
-      )}`
+        "yyyy-M-d",
+      )}`,
     );
 
-    return appointment;
+    const fullAppointment = await this.appointmentsRepository.findById(
+      appointment.id,
+    );
+
+    if (!fullAppointment) {
+      throw new AppError("Cannot create appointment");
+    }
+
+    return fullAppointment;
   }
 }
 
