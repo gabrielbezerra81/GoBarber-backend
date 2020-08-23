@@ -5,6 +5,7 @@ import AppError from "@shared/errors/AppError";
 import IAppointmentsRepository from "../repositories/IAppointmentsRepository";
 import INotificationsRepository from "@modules/notifications/repositories/INotificationsRepository";
 import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
+import { classToClass } from "class-transformer";
 
 interface IRequest {
   provider_id: string;
@@ -83,7 +84,7 @@ class CreateAppointmentServices {
       throw new AppError("Cannot create appointment");
     }
 
-    return fullAppointment;
+    return classToClass(fullAppointment);
   }
 }
 
