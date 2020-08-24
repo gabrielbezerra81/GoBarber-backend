@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { verify } from "jsonwebtoken";
+import { verify, decode } from "jsonwebtoken";
 import authConfig from "@config/auth";
 import AppError from "@shared/errors/AppError";
+
+import { refreshTokens } from "../../../services/AuthenticateUserService";
 
 interface TokenPayload {
   iat: number;
@@ -12,8 +14,10 @@ interface TokenPayload {
 export default function ensureAuthenticated(
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
+  const { refreshToken } = request.body;
+
   // Validação do token JWT
   const authHeader = request.headers.authorization;
 

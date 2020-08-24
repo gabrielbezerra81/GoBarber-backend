@@ -5,6 +5,7 @@ import AppError from "@shared/errors/AppError";
 import IUsersRepository from "../repositories/IUsersRepository";
 import { injectable, inject } from "tsyringe";
 import IHashProvider from "../providers/HashProvider/models/IHashProvider";
+import { uuid } from "uuidv4";
 
 interface IRequest {
   email: string;
@@ -13,14 +14,24 @@ interface IRequest {
 
 interface AuthResponse {
   user: User;
-  token: string;
+  token: {
+    token: string;
+    creationDate: Date;
+  };
+  refreshToken: string;
 }
+
+interface RefreshTokens {
+  [key: string]: any;
+}
+
+export var refreshTokens: RefreshTokens = {};
 
 @injectable()
 class AuthenticateUserService {
   constructor(
     @inject("UsersRepository") private usersRepository: IUsersRepository,
-    @inject("HashProvider") private hashProvider: IHashProvider
+    @inject("HashProvider") private hashProvider: IHashProvider,
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<AuthResponse> {
@@ -32,7 +43,7 @@ class AuthenticateUserService {
 
     const passwordMatched = await this.hashProvider.compareHash(
       password,
-      user.password
+      user.password,
     );
 
     if (!passwordMatched) {
@@ -48,7 +59,20 @@ class AuthenticateUserService {
       expiresIn,
     });
 
-    return { user, token };
+    const refreshToken = uuid();
+
+    refreshTokens[refreshToken] = {
+      id: user.id,
+      token,
+    };
+
+    const tokenCreationDate = new Date();
+
+    return {
+      user,
+      token: { token, creationDate: tokenCreationDate },
+      refreshToken,
+    };
   }
 }
 

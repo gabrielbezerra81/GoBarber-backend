@@ -14,7 +14,17 @@ sessionsRouter.post(
       password: Joi.string().required(),
     },
   }),
-  sessionsController.create
+  sessionsController.create,
+);
+
+sessionsRouter.post(
+  "/token",
+  celebrate({
+    [Segments.BODY]: {
+      refreshToken: Joi.string().required(),
+    },
+  }),
+  sessionsController.update,
 );
 
 export default sessionsRouter;
